@@ -9,11 +9,6 @@ _ = os.getenv("NCBI_API_KEY")
 
 fetch = PubMedFetcher()
 
-from metapub import PubMedFetcher, MetaPubError
-
-# Inicializa o fetcher
-fetch = PubMedFetcher()
-
 def get_pmid(dois):
     list_pmid = []
 
@@ -24,7 +19,7 @@ def get_pmid(dois):
                 list_pmid.append(pmids.pmid)
             else:
                 print(f"No PMID found for DOI: {doi}, skipping.")
-        except MetaPubError as e:
+        except Exception as e:
             # Captura o erro MetaPubError, mostrando a mensagem e continuando com o próximo DOI
             print(f"Error fetching PMID for DOI {doi}: {str(e)}")
             continue
