@@ -9,21 +9,28 @@ _ = os.getenv("NCBI_API_KEY")
 
 fetch = PubMedFetcher()
 
-def get_pmid(dois):
-    list_pmid = []  
-    
-    for doi in dois:
-        pmids = fetch.article_by_doi(doi)
-        
-        if not pmids or not hasattr(pmids, 'pmid'):
-            st.warning(f"No pmid found for DOI: {doi}, skipping.")  
-            continue 
-        
-        list_pmid.append(pmids.pmid)
-    
-    st.success("PubMed extraction done!")
-    return list_pmid
+from metapub import PubMedFetcher, MetaPubError
 
+# Inicializa o fetcher
+fetch = PubMedFetcher()
+
+def get_pmid(dois):
+    list_pmid = []
+
+    for doi in dois:
+        try:
+            pmids = fetch.article_by_doi(doi)
+            if pmids and hasattr(pmids, 'pmid'):
+                list_pmid.append(pmids.pmid)
+            else:
+                print(f"No PMID found for DOI: {doi}, skipping.")
+        except MetaPubError as e:
+            # Captura o erro MetaPubError, mostrando a mensagem e continuando com o próximo DOI
+            print(f"Error fetching PMID for DOI {doi}: {str(e)}")
+            continue
+    
+    print("PubMed extraction done!")
+    return list_pmid
 
 st.title('PubMed DOI to PMID Fetcher')
 
