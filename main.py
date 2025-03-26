@@ -40,7 +40,7 @@ if st.button("Obter PMIDs"):
         
         if pmids:
             pmids_string = ', '.join(pmids)  
-            st.write("PMIDs encontrados:")
+            st.write(" ## PMIDs encontrados:")
             st.write(pmids_string)  
         else:
             st.write("Nenhum PMID encontrado.")
